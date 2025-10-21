@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Contact — DiabCare+</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">DiabCare<span class="plus">+</span></a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="diet.html">Diet Planner</a>
+        <a href="insulin.html">Insulin Calculator</a>
+        <a href="tips.html">Health Tips</a>
+        <a href="contact.html" class="active">Contact</a>
+      </nav>
+      <button class="burger" aria-label="Open menu">&#9776;</button>
+    </div>
+  </header>
+
+  <main class="container page">
+    <h1>Contact & Feedback</h1>
+    <p class="muted">This demo stores messages locally. For production, connect a secure backend.</p>
+    <div class="card">
+      <form id="contactForm">
+        <label>Name<input id="cname" required></label>
+        <label>Email<input id="cemail" type="email" required></label>
+        <label>Message<textarea id="cmessage" rows="4" required></textarea></label>
+        <div class="form-actions"><button class="btn" type="submit">Send</button></div>
+      </form>
+    </div>
+
+    <div id="contactSaved" class="card hidden"><h3>Saved Locally</h3><p>Your message has been saved to localStorage (demo).</p></div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner"><div><strong>DiabCare+</strong></div><div class="footer-links"><a href="index.html">Home</a></div></div>
+    <div class="footer-bottom container"><small>© <span id="year5"></span> DiabCare+</small></div>
+  </footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

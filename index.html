@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DiabCare+ — Diabetic Diet & Insulin Management</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">DiabCare<span class="plus">+</span></a>
+      <nav class="nav">
+        <a href="index.html" class="active">Home</a>
+        <a href="diet.html">Diet Planner</a>
+        <a href="insulin.html">Insulin Calculator</a>
+        <a href="tips.html">Health Tips</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <button class="burger" aria-label="Open menu">&#9776;</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-left">
+          <h1>Smart Diet & Insulin Management</h1>
+          <p class="muted">Personalized meal plans, insulin dose guidance, and daily tips — designed for clarity and safety. Educational tool only.</p>
+          <div class="cta">
+            <a class="btn" href="diet.html">Get Meal Plan</a>
+            <a class="btn btn-outline" href="insulin.html">Calculate Insulin</a>
+          </div>
+          <div class="features-row">
+            <div class="feature-card">
+              <strong>Personalized</strong>
+              <span>Tailored to weight, activity & glucose</span>
+            </div>
+            <div class="feature-card">
+              <strong>Simple</strong>
+              <span>Clear recommendations & printable report</span>
+            </div>
+            <div class="feature-card">
+              <strong>Responsive</strong>
+              <span>Works on mobile & desktop</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-right">
+          <div class="glass-card chart-card">
+            <h3>Glucose Snapshot</h3>
+            <canvas id="miniChart" width="300" height="200"></canvas>
+            <p class="small muted">Sample historical glucose (mg/dL)</p>
+          </div>
+          <div class="glass-card quick-links">
+            <a href="tips.html" class="link">Daily Tips →</a>
+            <a href="contact.html" class="link">Contact Expert →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="about container">
+      <div class="about-grid">
+        <div class="about-card">
+          <h2>Why DiabCare+</h2>
+          <p class="muted">Designed for students and educators — combines easy estimators with clear UI for demos and project submissions.</p>
+        </div>
+        <div class="about-card">
+          <h2>How it helps</h2>
+          <ul class="muted">
+            <li>Estimate daily calories & carb distribution</li>
+            <li>Calculate insulin dose using configurable ISF & ICR</li>
+            <li>Printable summary for reports or consultations</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div><strong>DiabCare+</strong><br><small class="muted">Educational tool — not medical advice</small></div>
+      <div class="footer-links">
+        <a href="diet.html">Diet Planner</a>
+        <a href="insulin.html">Insulin Calc</a>
+        <a href="tips.html">Health Tips</a>
+      </div>
+    </div>
+    <div class="footer-bottom container"><small>© <span id="year"></span> DiabCare+. Made for EDP.</small></div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

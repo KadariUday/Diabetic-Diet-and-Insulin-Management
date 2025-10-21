@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Diet Planner — DiabCare+</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">DiabCare<span class="plus">+</span></a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="diet.html" class="active">Diet Planner</a>
+        <a href="insulin.html">Insulin Calculator</a>
+        <a href="tips.html">Health Tips</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <button class="burger" aria-label="Open menu">&#9776;</button>
+    </div>
+  </header>
+
+  <main class="container page">
+    <h1>Diet Planner</h1>
+    <p class="muted">Enter basic info to generate a guideline-based meal plan. This tool is educational — consult a dietitian for personalized plans.</p>
+
+    <div class="card form-card">
+      <form id="dietForm">
+        <div class="grid-2">
+          <label>Age<input id="age" type="number" min="1" required></label>
+          <label>Weight (kg)<input id="weight" type="number" min="20" required></label>
+        </div>
+        <div class="grid-2">
+          <label>Current Glucose (mg/dL)<input id="glucose" type="number" min="30" required></label>
+          <label>Activity Level
+            <select id="activity">
+              <option value="1.2">Sedentary</option>
+              <option value="1.4">Light</option>
+              <option value="1.6" selected>Moderate</option>
+              <option value="1.8">Active</option>
+            </select>
+          </label>
+        </div>
+        <div class="form-actions">
+          <button class="btn" type="submit">Generate Plan</button>
+          <button class="btn btn-outline" id="downloadDiet" type="button">Download Report</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="dietResult" class="card result-card hidden">
+      <h2>Suggested Daily Plan</h2>
+      <p id="summary"></p>
+      <div id="meals" class="meals-grid"></div>
+      <p class="disclaimer muted">For educational demonstration only.</p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner"><div><strong>DiabCare+</strong></div><div class="footer-links"><a href="index.html">Home</a></div></div>
+    <div class="footer-bottom container"><small>© <span id="year2"></span> DiabCare+</small></div>
+  </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
