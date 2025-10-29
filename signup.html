@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Sign Up — DiabCare+</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+    <!-- Header will be injected by JavaScript -->
+    <header id="main-header" class="site-header"></header>
+
+    <main class="container page">
+        <div class="auth-card">
+            <h1>Create Account</h1>
+            <p class="muted">Save your diet and insulin history.</p>
+
+            <form id="signupForm">
+                <label>Email<input id="email" type="email" required></label>
+                <label>Password<input id="password" type="password" minlength="6" required></label>
+
+                <div class="form-actions">
+                    <button class="btn" type="submit">Sign Up</button>
+                </div>
+            </form>
+
+            <div id="message-box" class="message-box hidden"></div>
+
+            <p class="auth-switch">Already have an account? <a href="login.html">Login</a></p>
+        </div>
+    </main>
+
+    <!-- Footer will be injected by JavaScript -->
+    <footer id="main-footer" class="site-footer"></footer>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>

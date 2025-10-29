@@ -1,4 +1,4 @@
-<!doctype html>
+<!-- <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -94,4 +94,70 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="js/main.js"></script>
 </body>
+</html> -->
+
+
+
+
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login — DiabCare+</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide-react@latest/dist/umd/lucide.js"></script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body class="auth-body">
+
+  <main class="auth-container">
+    <div class="auth-panel auth-panel-left">
+      <div class="auth-branding">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="lucide lucide-heart-pulse">
+          <path
+            d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+          <path d="M3.22 12H9.5l.7-1.44.7 1.44H15.8" />
+        </svg>
+        <h1>DiabCare<span class="plus">+</span></h1>
+        <p>Smart Diet & Insulin Management</p>
+      </div>
+    </div>
+
+    <div class="auth-panel auth-panel-right">
+      <form id="loginForm" class="auth-form">
+        <h2>Welcome Back</h2>
+        <p class="muted">Please log in to access your dashboard.</p>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input id="email" type="email" required placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input id="password" type="password" required placeholder="••••••••">
+        </div>
+
+        <div id="message-box" class="message-box hidden"></div>
+
+        <button class="btn btn-primary" type="submit">
+          <i data-lucide="log-in"></i>
+          <span>Login</span>
+        </button>
+
+        <p class="auth-switch">
+          Don't have an account? <a href="signup.html">Sign Up</a>
+        </p>
+      </form>
+    </div>
+  </main>
+
+  <script src="js/main.js"></script>
+</body>
+
 </html>

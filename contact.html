@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -7,24 +8,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
-  <header class="site-header">
-    <div class="container header-inner">
-      <a href="index.html" class="logo">DiabCare<span class="plus">+</span></a>
-      <nav class="nav">
-        <a href="index.html">Home</a>
-        <a href="diet.html">Diet Planner</a>
-        <a href="insulin.html">Insulin Calculator</a>
-        <a href="tips.html">Health Tips</a>
-        <a href="contact.html" class="active">Contact</a>
-      </nav>
-      <button class="burger" aria-label="Open menu">&#9776;</button>
-    </div>
-  </header>
+
+  <!-- Header will be injected by JavaScript -->
+  <header id="main-header" class="site-header"></header>
 
   <main class="container page">
     <h1>Contact & Feedback</h1>
-    <p class="muted">This demo stores messages locally. For production, connect a secure backend.</p>
+    <p class="muted">Send us a message. Your feedback is saved to our database.</p>
     <div class="card">
       <form id="contactForm">
         <label>Name<input id="cname" required></label>
@@ -34,14 +26,13 @@
       </form>
     </div>
 
-    <div id="contactSaved" class="card hidden"><h3>Saved Locally</h3><p>Your message has been saved to localStorage (demo).</p></div>
+    <div id="message-box" class="message-box hidden"></div>
   </main>
 
-  <footer class="site-footer">
-    <div class="container footer-inner"><div><strong>DiabCare+</strong></div><div class="footer-links"><a href="index.html">Home</a></div></div>
-    <div class="footer-bottom container"><small>© <span id="year5"></span> DiabCare+</small></div>
-  </footer>
+  <!-- Footer will be injected by JavaScript -->
+  <footer id="main-footer" class="site-footer"></footer>
 
-<script src="js/main.js"></script>
+  <script src="js/main.js"></script>
 </body>
+
 </html>
