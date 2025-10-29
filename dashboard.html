@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Dashboard — DiabCare+</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+    <!-- Header will be injected by JavaScript -->
+    <header id="main-header" class="site-header"></header>
+
+    <main class="container page">
+        <h1>Your Dashboard</h1>
+        <p class="muted" id="welcome-message">Loading your saved data...</p>
+
+        <div id="message-box" class="message-box hidden"></div>
+
+        <section class="dashboard-section">
+            <h2>Saved Diet Plans</h2>
+            <div id="diet-history" class="history-grid">
+                <p>No diet plans saved yet. Go to the <a href="diet.html">Diet Planner</a> to create one.</p>
+            </div>
+        </section>
+
+        <section class="dashboard-section">
+            <h2>Saved Insulin Calculations</h2>
+            <div id="insulin-history" class="history-grid">
+                <p>No insulin calculations saved yet. Go to the <a href="insulin.html">Insulin Calculator</a> to create
+                    one.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer will be injected by JavaScript -->
+    <footer id="main-footer" class="site-footer"></footer>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>

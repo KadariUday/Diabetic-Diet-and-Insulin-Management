@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -7,30 +8,21 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
-  <header class="site-header">
-    <div class="container header-inner">
-      <a href="index.html" class="logo">DiabCare<span class="plus">+</span></a>
-      <nav class="nav">
-        <a href="index.html">Home</a>
-        <a href="diet.html">Diet Planner</a>
-        <a href="insulin.html" class="active">Insulin Calculator</a>
-        <a href="tips.html">Health Tips</a>
-        <a href="contact.html">Contact</a>
-      </nav>
-      <button class="burger" aria-label="Open menu">&#9776;</button>
-    </div>
-  </header>
+
+  <!-- Header will be injected by JavaScript -->
+  <header id="main-header" class="site-header"></header>
 
   <main class="container page">
     <h1>Insulin Dose Calculator</h1>
-    <p class="muted">Estimate insulin dose. Inputs like ISF and ICR vary by person — use clinical values.</p>
+    <p class="muted">Estimate insulin dose. Log in to save your calculations to your dashboard.</p>
 
     <div class="card form-card">
       <form id="insulinForm">
         <div class="grid-2">
           <label>Current Glucose (mg/dL)<input id="curBG" type="number" min="20" required></label>
-          <label>Carbs (g)<input id="carbs" type="number" min="0" value="0" required></label>
+          <label>Carbs (g)<input id="carbs" typeE="number" min="0" value="0" required></label>
         </div>
         <div class="grid-2">
           <label>Target Glucose (mg/dL)<input id="targetBG" type="number" min="50" value="110" required></label>
@@ -47,6 +39,8 @@
       </form>
     </div>
 
+    <div id="message-box" class="message-box hidden"></div>
+
     <div id="insulinResult" class="card result-card hidden">
       <h2>Estimated Dose</h2>
       <p id="doseText"></p>
@@ -54,11 +48,10 @@
     </div>
   </main>
 
-  <footer class="site-footer">
-    <div class="container footer-inner"><div><strong>DiabCare+</strong></div><div class="footer-links"><a href="diet.html">Diet Planner</a></div></div>
-    <div class="footer-bottom container"><small>© <span id="year3"></span> DiabCare+</small></div>
-  </footer>
+  <!-- Footer will be injected by JavaScript -->
+  <footer id="main-footer" class="site-footer"></footer>
 
-<script src="js/main.js"></script>
+  <script src="js/main.js"></script>
 </body>
+
 </html>
