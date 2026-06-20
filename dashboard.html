@@ -20,6 +20,13 @@
 
         <div id="message-box" class="message-box hidden"></div>
 
+        <div class="dashboard-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+            <div class="card" style="grid-column: 1 / -1;">
+                <h2>Recent Glucose Trends</h2>
+                <canvas id="miniChart" height="80"></canvas>
+            </div>
+        </div>
+
         <section class="dashboard-section">
             <h2>Saved Diet Plans</h2>
             <div id="diet-history" class="history-grid">
@@ -62,6 +69,7 @@
     <!-- Footer will be injected by JavaScript -->
     <footer id="main-footer" class="site-footer"></footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="js/main.js"></script>
 </body>
 

@@ -13,16 +13,37 @@ document.addEventListener('DOMContentLoaded', () => {
   const getUserEmail = () => localStorage.getItem('diabcare_email');
   const isLoggedIn = () => !!getToken();
 
-  // Show messages (for success/error)
-  const showMessage = (message, type = 'error') => {
-    const box = document.getElementById('message-box');
-    if (box) {
-      box.textContent = message;
-      box.className = `message-box ${type}`;
-      box.classList.remove('hidden');
-      // Scroll to message
-      box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  // Show messages (for success/error) - Upgraded to Toast!
+  const showMessage = (message, type = 'success') => {
+    let container = document.getElementById('toast-container');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'toast-container';
+      container.className = 'toast-container';
+      document.body.appendChild(container);
     }
+
+    const toast = document.createElement('div');
+    toast.className = `toast ${type === 'error' ? 'toast-error' : ''}`;
+    
+    // Icon based on type
+    const icon = type === 'error' 
+      ? `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-alert-circle"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>`
+      : `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle-2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>`;
+
+    toast.innerHTML = `${icon} <span>${message}</span>`;
+    container.appendChild(toast);
+
+    // Animate in
+    requestAnimationFrame(() => {
+      toast.classList.add('show');
+    });
+
+    // Remove after 3 seconds
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
   };
 
   // --- DYNAMIC CONTENT RENDERING ---
@@ -497,14 +518,44 @@ document.addEventListener('DOMContentLoaded', () => {
   const setupMobileMenu = () => {
     const burger = document.querySelector('.burger');
     const nav = document.querySelector('.nav');
+
     if (burger && nav) {
       burger.addEventListener('click', () => {
         nav.classList.toggle('active-nav');
       });
+
+      // Close menu when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!burger.contains(e.target) && !nav.contains(e.target)) {
+          nav.classList.remove('active-nav');
+        }
+      });
     }
   };
 
+  // Range Slider Sync Logic
+  const setupRangeSliders = () => {
+    const sliders = document.querySelectorAll('input[type="range"]');
+    sliders.forEach(slider => {
+      // Find the sibling element that displays the value
+      const display = slider.parentElement.querySelector('.range-value');
+      if (display) {
+        // Initial setup
+        display.textContent = slider.value;
+        // Update on input
+        slider.addEventListener('input', () => {
+          display.textContent = slider.value;
+        });
+      }
+    });
+  };
+
   // --- INITIALIZATION ---
+  
+  // Try to render header and footer
+  renderHeader();
+  renderFooter();
+  setupRangeSliders();
 
   // Get current page to run specific logic
   const page = window.location.pathname.split('/').pop();

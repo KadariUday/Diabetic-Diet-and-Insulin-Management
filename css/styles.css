@@ -215,6 +215,43 @@ textarea {
   min-height: 80px;
   resize: vertical;
 }
+
+/* --- RANGE SLIDERS --- */
+.range-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+input[type=range] {
+  flex: 1;
+  -webkit-appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+input[type=range]::-webkit-slider-runnable-track {
+  background: var(--neutral-300);
+  height: 6px;
+  border-radius: 3px;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  margin-top: -6px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--primary-500);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s;
+}
+input[type=range]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+.range-value {
+  font-weight: 600;
+  color: var(--primary-600);
+  min-width: 45px;
+  text-align: right;
+}
 .form-actions {
   display: flex;
   gap: 1rem;
@@ -498,7 +535,38 @@ textarea {
   margin-top: 0.75rem;
 }
 
-/* --- MESSAGE BOX --- */
+/* --- TOAST NOTIFICATIONS --- */
+.toast-container {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.toast {
+  background: var(--neutral-0);
+  border-left: 4px solid var(--primary-500);
+  padding: 1rem 1.5rem;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-lg);
+  color: var(--neutral-900);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transform: translateX(120%);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.toast.toast-error {
+  border-left-color: var(--danger-500);
+}
+.toast.show {
+  transform: translateX(0);
+}
+
+/* --- MESSAGE BOX (Legacy fallback) --- */
 .message-box {
   padding: 1rem 1.25rem;
   border-radius: var(--radius-md);
@@ -704,7 +772,7 @@ body::before {
     padding: 0.5rem;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
-    border: var(--border-light);
+    border: 1px solid var(--neutral-300);
     align-items: stretch;
   }
   .nav.active-nav {
@@ -729,5 +797,15 @@ body::before {
   
   h1 { font-size: 1.8rem; }
   .hero-left h1 { font-size: 2rem; }
+
+  /* Stack Dashboard Grid */
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Make tables scrollable */
+  .table-container {
+    overflow-x: auto;
+  }
 }
 

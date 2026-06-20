@@ -21,15 +21,40 @@
     <div class="card form-card">
       <form id="insulinForm">
         <div class="grid-2">
-          <label>Current Glucose (mg/dL)<input id="curBG" type="number" min="20" required></label>
-          <label>Carbs (g)<input id="carbs" type="number" min="0" value="0" required></label>
+          <label>Current Glucose (mg/dL)
+            <div class="range-container">
+              <input id="curBG" type="range" min="20" max="400" value="150" required>
+              <span class="range-value">150</span>
+            </div>
+          </label>
+          <label>Carbs (g)
+            <div class="range-container">
+              <input id="carbs" type="range" min="0" max="200" value="0" required>
+              <span class="range-value">0</span>
+            </div>
+          </label>
         </div>
         <div class="grid-2">
-          <label>Target Glucose (mg/dL)<input id="targetBG" type="number" min="50" value="110" required></label>
-          <label>ISF (mg/dL per unit)<input id="isf" type="number" min="1" value="50" required></label>
+          <label>Target Glucose (mg/dL)
+            <div class="range-container">
+              <input id="targetBG" type="range" min="50" max="200" value="110" required>
+              <span class="range-value">110</span>
+            </div>
+          </label>
+          <label>ISF (mg/dL per unit)
+            <div class="range-container">
+              <input id="isf" type="range" min="1" max="100" value="50" required>
+              <span class="range-value">50</span>
+            </div>
+          </label>
         </div>
         <div class="grid-2">
-          <label>ICR (g per unit)<input id="icr" type="number" min="1" value="12" required></label>
+          <label>ICR (g per unit)
+            <div class="range-container">
+              <input id="icr" type="range" min="1" max="50" value="12" required>
+              <span class="range-value">12</span>
+            </div>
+          </label>
           <div></div>
         </div>
         <div class="form-actions">
