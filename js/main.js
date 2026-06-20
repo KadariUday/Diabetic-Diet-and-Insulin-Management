@@ -3,7 +3,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
   // --- CONFIG ---
-  const API_URL = 'http://localhost:3000/api'; // Your backend URL
+  const API_URL = '/api'; // Uses relative path for production hosting
 
   // --- STATE ---
   let lastDietPlan = null; // Store last plan for printing
