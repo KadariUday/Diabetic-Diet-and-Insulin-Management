@@ -394,21 +394,40 @@ document.addEventListener('DOMContentLoaded', () => {
   const initContactForm = () => {
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
-      contactForm.addEventListener('submit', (e) => {
+      contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const name = document.getElementById('cname').value.trim();
         const email = document.getElementById('cemail').value.trim();
         const message = document.getElementById('cmessage').value.trim();
 
-        // Format as plain text string (not a hash/JSON)
+        // Format as plain text string
         const plainTextBody = `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`;
-        const subject = `New Contact Request from ${name}`;
 
-        // Send via mailto directly without backend form submit
-        window.location.href = `mailto:kadariuday2233@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(plainTextBody)}`;
+        showMessage('Sending message...', 'success');
 
-        document.getElementById('contactForm').reset();
-        showMessage('Opening your email client with plain text data...', 'success');
+        try {
+          // Send via FormSubmit API in the background
+          const res = await fetch("https://formsubmit.co/ajax/kadariuday2233@gmail.com", {
+            method: "POST",
+            headers: { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                _subject: `New Contact Request from ${name}`,
+                _template: "basic", // Makes the email unstyled/plain text
+                message: plainTextBody
+            })
+          });
+
+          if (!res.ok) throw new Error('Failed to send message via formsubmit.');
+          
+          document.getElementById('contactForm').reset();
+          showMessage('Message sent successfully! Thank you.', 'success');
+
+        } catch(err) {
+          showMessage('Failed to send message automatically.', 'error');
+        }
       });
     }
   };
