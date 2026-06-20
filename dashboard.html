@@ -35,6 +35,28 @@
             </div>
         </section>
 
+        <section class="dashboard-section">
+            <h2>AI Food Suggestions</h2>
+            <div class="card" style="max-width: 100%;">
+                <p>Get real-time food suggestions based on your planned stats.</p>
+                <div style="margin-top: 1rem;">
+                    <button id="get-suggestion-btn" class="btn btn-primary">Get Personalized Suggestion</button>
+                </div>
+                <div id="ai-result" class="hidden"
+                    style="margin-top: 1.5rem; background: #f0f7ff; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #0b74ff;">
+                    <h3 style="margin-top: 0; display: flex; align-items: center; gap: 0.5rem;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                        </svg>
+                        Gemini Suggests:
+                    </h3>
+                    <div id="ai-loading" class="hidden">Thinking...</div>
+                    <div id="ai-content" style="line-height: 1.6; white-space: pre-line;"></div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <!-- Footer will be injected by JavaScript -->

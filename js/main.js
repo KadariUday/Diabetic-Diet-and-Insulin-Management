@@ -437,6 +437,60 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (err) {
       showMessage(err.message, 'error');
     }
+
+    // AI Suggestion Logic
+    const suggestBtn = document.getElementById('get-suggestion-btn');
+    if (suggestBtn) {
+      suggestBtn.addEventListener('click', async () => {
+        const resultDiv = document.getElementById('ai-result');
+        const contentDiv = document.getElementById('ai-content');
+        const loadingDiv = document.getElementById('ai-loading');
+
+        // Try to get latest data from history if available, else prompt user
+        // For simplicity reusing the first plan's data or defaults if empty
+        // In a real app we might ask for fresh input
+        let dataToUse = { glucose: 100, weight: 70, activity: 1.2 };
+
+        // Check diet history for latest data
+        try {
+          const dRes = await fetch(`${API_URL}/diet/history`, { headers: { 'Authorization': `Bearer ${getToken()}` } });
+          const dData = await dRes.json();
+          if (dData && dData.length > 0) {
+            dataToUse = dData[0]; // Use latest
+          }
+        } catch (e) { }
+
+        resultDiv.classList.remove('hidden');
+        loadingDiv.classList.remove('hidden');
+        contentDiv.textContent = '';
+        suggestBtn.disabled = true;
+
+        try {
+          const res = await fetch(`${API_URL}/suggest-food`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${getToken()}`
+            },
+            body: JSON.stringify({
+              glucose: dataToUse.glucose,
+              weight: dataToUse.weight,
+              activity: dataToUse.activity
+            })
+          });
+
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.message || 'AI request failed');
+
+          contentDiv.textContent = data.suggestion;
+        } catch (err) {
+          contentDiv.textContent = 'Error: ' + err.message;
+        } finally {
+          loadingDiv.classList.add('hidden');
+          suggestBtn.disabled = false;
+        }
+      });
+    }
   };
 
   // --- Mobile Menu ---

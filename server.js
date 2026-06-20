@@ -1,5 +1,6 @@
+require('dotenv').config();
 const express = require('express');
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose'); // Removed for no-db run
 // const bodyParser = require('body-parser'); // <-- REMOVED
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
@@ -7,71 +8,77 @@ const jwt = require('jsonwebtoken');
 
 // --- CONFIGURATION ---
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // !! IMPORTANT !!
 // Replace with your own MongoDB connection string
-const MONGO_URI = 'mongodb+srv://nitiniare:nitiniare@cluster0.jpuub1j.mongodb.net/';
+const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://nitiniare:nitiniare@cluster0.jpuub1j.mongodb.net/';
 // Replace with your own secret key for signing tokens
-const JWT_SECRET = '123456';
+const JWT_SECRET = process.env.JWT_SECRET || '123456';
 
 // --- MIDDLEWARE ---
-app.use(cors()); // Allow requests from your frontend
-// app.use(bodyParser.json()); // <-- REPLACED
 app.use(express.json()); // <-- ADDED: The modern way to parse JSON bodies
+app.use(express.static(__dirname)); // <-- ADDED: Serve static files from the root directory
 
-// --- DATABASE CONNECTION ---
-mongoose.connect(MONGO_URI)
-    .then(() => console.log('MongoDB connected successfully.'))
-    .catch(err => console.error('MongoDB connection error:', err));
+// --- GEMINI CONFIG ---
+const { GoogleGenerativeAI } = require('@google/generative-ai');
+
+// Access your API key as an environment variable (see "Set up your API key" above)
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || 'YOUR_API_KEY_HERE');
+
+
+// --- DATABASE MOCK (In-Memory) ---
+const db = {
+    users: [],
+    dietPlans: [],
+    insulinDoses: [],
+    contactMessages: []
+};
+
+const generateId = () => Math.random().toString(36).substr(2, 9);
+
+class User {
+    constructor(data) { Object.assign(this, data); this._id = this._id || generateId(); }
+    static async findOne(query) { 
+        return db.users.find(u => u.email === (query.email && query.email.toLowerCase())); 
+    }
+    async save() { 
+        const index = db.users.findIndex(u => u.email === this.email);
+        if (index > -1) db.users[index] = this;
+        else db.users.push(this);
+        return this;
+    }
+    get id() { return this._id; }
+}
+
+class DietPlan {
+    constructor(data) { Object.assign(this, data); this._id = generateId(); this.createdAt = new Date(); }
+    static find(query) {
+        let results = db.dietPlans.filter(p => p.userId === query.userId);
+        return { sort: () => results.sort((a, b) => b.createdAt - a.createdAt) };
+    }
+    async save() { db.dietPlans.push(this); return this; }
+}
+
+class InsulinDose {
+    constructor(data) { Object.assign(this, data); this._id = generateId(); this.createdAt = new Date(); }
+    static find(query) {
+        let results = db.insulinDoses.filter(d => d.userId === query.userId);
+        return { sort: () => results.sort((a, b) => b.createdAt - a.createdAt) };
+    }
+    async save() { db.insulinDoses.push(this); return this; }
+}
+
+class ContactMessage {
+    constructor(data) { Object.assign(this, data); this._id = generateId(); this.createdAt = new Date(); }
+    async save() { db.contactMessages.push(this); return this; }
+}
+
+console.log('Using In-Memory Database Mode.');
 
 // --- DATABASE SCHEMAS ---
 
-// User Schema (for login/signup)
-const UserSchema = new mongoose.Schema({
-    email: { type: String, required: true, unique: true, lowercase: true, trim: true },
-    password: { type: String, required: true },
-    createdAt: { type: Date, default: Date.now }
-});
-
-// Diet Plan Schema
-const DietPlanSchema = new mongoose.Schema({
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    age: { type: Number, required: true },
-    weight: { type: Number, required: true },
-    glucose: { type: Number, required: true },
-    activity: { type: Number, required: true },
-    calories: { type: Number, required: true },
-    mealList: { type: Array, required: true },
-    createdAt: { type: Date, default: Date.now }
-});
-
-// Insulin Dose Schema
-const InsulinDoseSchema = new mongoose.Schema({
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    curBG: { type: Number, required: true },
-    carbs: { type: Number, required: true },
-    targetBG: { type: Number, required: true },
-    isf: { type: Number, required: true },
-    icr: { type: Number, required: true },
-    totalDose: { type: Number, required: true },
-    createdAt: { type: Date, default: Date.now }
-});
-
-// Contact Message Schema
-const ContactMessageSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    email: { type: String, required: true },
-    message: { type: String, required: true },
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null }, // Optional: if user is logged in
-    createdAt: { type: Date, default: Date.now }
-});
-
-// --- MODELS ---
-const User = mongoose.model('User', UserSchema);
-const DietPlan = mongoose.model('DietPlan', DietPlanSchema);
-const InsulinDose = mongoose.model('InsulinDose', InsulinDoseSchema);
-const ContactMessage = mongoose.model('ContactMessage', ContactMessageSchema);
+// Models are now mock classes defined above
 
 // --- AUTH MIDDLEWARE ---
 // This function checks for a valid token on protected routes
@@ -252,6 +259,45 @@ app.get('/api/insulin/history', authMiddleware, async (req, res) => {
     }
 });
 
+
+// [POST] /api/suggest-food - Get AI food suggestions
+app.post('/api/suggest-food', authMiddleware, async (req, res) => {
+    try {
+        const { glucose, weight, activity } = req.body;
+
+        // Construct prompt
+        const prompt = `
+            Act as an expert dietician for a diabetic patient.
+            User Profile:
+            - Current Glucose Level: ${glucose} mg/dL
+            - Weight: ${weight} kg
+            - Activity Level (1.2 sedentary - 1.9 active): ${activity}
+            
+            Task: Suggest 3 specific, healthy food options or meals for this user right now considering their glucose level. 
+            If glucose is low (<70), suggest fast-acting carbs.
+            If glucose is high (>180), suggest low-carb, high-fiber options.
+            If normal, suggest a balanced meal.
+            
+            Format:
+            1. [Option Name]: [Brief reason]
+            2. [Option Name]: [Brief reason]
+            3. [Option Name]: [Brief reason]
+            
+            Keep it concise.
+        `;
+
+        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        const text = response.text();
+
+        res.json({ suggestion: text });
+
+    } catch (err) {
+        console.error('AI Suggestion Error:', err);
+        res.status(500).json({ message: 'Failed to generate suggestion.', error: err.message });
+    }
+});
 
 // --- START SERVER ---
 app.listen(PORT, () => {

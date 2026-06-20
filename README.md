@@ -77,7 +77,7 @@ To run DiabCare+ locally:
 
 Clone the repository
 
-bash
+basht
 Copy code
 git clone https://github.com/KadariUday/Diabetic-Diet-and-Insulin-Management.git
 Navigate to project folder
