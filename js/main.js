@@ -192,14 +192,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- PAGE-SPECIFIC LOGIC ---
 
-  // Dashboard Chart (moved from old home)
-  const initDashboardChart = () => {
+  // Dashboard Chart (Dynamic)
+  let dashboardChartInstance = null;
+
+  const renderDashboardChart = (labels, data) => {
     try {
       const ctx = document.getElementById('miniChart');
       if (ctx) {
-        const labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-        const data = [120, 135, 128, 140, 130, 125, 118];
-        new Chart(ctx, {
+        if (dashboardChartInstance) {
+          dashboardChartInstance.destroy();
+        }
+        dashboardChartInstance = new Chart(ctx, {
           type: 'line',
           data: {
             labels, datasets: [{
@@ -207,9 +210,9 @@ document.addEventListener('DOMContentLoaded', () => {
               data,
               fill: true,
               tension: 0.3,
-              pointRadius: 3,
-              backgroundColor: 'rgba(11, 116, 255, 0.1)',
-              borderColor: 'rgba(11, 116, 255, 1)'
+              pointRadius: 4,
+              backgroundColor: 'rgba(16, 185, 129, 0.1)',
+              borderColor: 'rgba(16, 185, 129, 1)'
             }]
           },
           options: {
@@ -228,7 +231,12 @@ document.addEventListener('DOMContentLoaded', () => {
       "Prefer whole grains and high-fiber foods to slow glucose rise.",
       "Stay hydrated — water helps regulate glucose levels.",
       "Check feet daily for cuts or sores; diabetes affects circulation.",
-      "Carry a fast-acting sugar source for hypoglycemia emergencies."
+      "Carry a fast-acting sugar source for hypoglycemia emergencies.",
+      "Incorporate strength training twice a week to improve insulin sensitivity.",
+      "Aim for 7-8 hours of sleep per night; poor sleep can increase insulin resistance.",
+      "Manage stress with yoga or meditation, as stress hormones can elevate blood sugar.",
+      "Include a source of lean protein with every meal to keep you full and stabilize glucose.",
+      "Don't skip meals; consistent eating times help prevent extreme blood sugar fluctuations."
     ];
     let tipIndex = 0;
     const tipTextEl = document.getElementById('tipText');
@@ -386,29 +394,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const initContactForm = () => {
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
-      contactForm.addEventListener('submit', async (e) => {
+      contactForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const name = document.getElementById('cname').value.trim();
         const email = document.getElementById('cemail').value.trim();
         const message = document.getElementById('cmessage').value.trim();
-        const token = getToken();
 
-        try {
-          const res = await fetch(`${API_URL}/contact`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, email, message, token }) // Send token if available
-          });
+        // Format as plain text string (not a hash/JSON)
+        const plainTextBody = `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`;
+        const subject = `New Contact Request from ${name}`;
 
-          const data = await res.json();
-          if (!res.ok) throw new Error(data.message || 'Failed to send message.');
+        // Send via mailto directly without backend form submit
+        window.location.href = `mailto:kadariuday2233@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(plainTextBody)}`;
 
-          document.getElementById('contactForm').reset();
-          showMessage('Thank you! Your message has been received.', 'success');
-
-        } catch (err) {
-          showMessage(err.message, 'error');
-        }
+        document.getElementById('contactForm').reset();
+        showMessage('Opening your email client with plain text data...', 'success');
       });
     }
   };
@@ -454,6 +454,24 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         `).join('');
       } // 'else' retains the default "No doses" message
+
+      // Combine Data for Chart
+      const chartPoints = [];
+      dietPlans.forEach(p => { if (p.glucose) chartPoints.push({ date: new Date(p.createdAt), bg: Number(p.glucose) }) });
+      insulinDoses.forEach(p => { if (p.curBG) chartPoints.push({ date: new Date(p.createdAt), bg: Number(p.curBG) }) });
+      
+      chartPoints.sort((a, b) => a.date - b.date);
+      
+      let labels = ['No Data Yet'];
+      let chartData = [0];
+      
+      if (chartPoints.length > 0) {
+        const recent = chartPoints.slice(-10); // Show last 10 points
+        labels = recent.map(p => p.date.toLocaleDateString([], { month: 'short', day: 'numeric' }));
+        chartData = recent.map(p => p.bg);
+      }
+      
+      renderDashboardChart(labels, chartData);
 
     } catch (err) {
       showMessage(err.message, 'error');
@@ -577,7 +595,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (page === 'dashboard.html') {
       initDashboard();
-      initDashboardChart();
     }
     if (page === 'tips.html') {
       initTips();

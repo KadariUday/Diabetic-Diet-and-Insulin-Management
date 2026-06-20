@@ -158,31 +158,6 @@ app.post('/api/auth/login', async (req, res) => {
     }
 });
 
-// [POST] /api/contact - Save a contact message
-app.post('/api/contact', async (req, res) => {
-    try {
-        const { name, email, message, token } = req.body;
-
-        let userId = null;
-        if (token) {
-            try {
-                const decoded = jwt.verify(token, JWT_SECRET);
-                userId = decoded.user.id; // This was already correct
-            } catch (e) {
-                // Ignore if token is invalid, just save message anonymously
-            }
-        }
-
-        const newMessage = new ContactMessage({ name, email, message, userId });
-        await newMessage.save();
-
-        res.status(201).json({ message: 'Message saved successfully.' });
-    } catch (err) {
-        console.error('Contact Error:', err); // Added console.error for debugging
-        res.status(500).json({ message: 'Server error', error: err.message });
-    }
-});
-
 
 // --- PROTECTED ROUTES (Require Auth) ---
 
